@@ -8,8 +8,7 @@ function makePlot1(data) {
       }
 
     var data = [{
-        type: "scatter",
-        mode: "lines",
+        type: "bar",
         name: 'Trump Tweets',
         x: unpack(data, 'date'),
         y: unpack(data, 'Frequency'),
@@ -27,22 +26,19 @@ function makePlot1(data) {
             color: "black"
         },
         xaxis: {
-            title: 'Date',
-            range: ['2017-01-01', '2021-01-08'],
-            type: 'date'
+            rangeslider: {}
         },
         yaxis: {
-
-            range: [0, 70],
-            title: 'Tweets',
-            type: 'linear'
+            fixedrange: true
         },
         line: {
             width: 1
         },
         hovermode: 'closest',
-
     };
+
+
+    
      // Create the plot:
     Plotly.newPlot('firstPlot', {
         data: data,
@@ -97,7 +93,6 @@ function make_plot(tweet_data, tsne_data) {
   
     Plotly.newPlot('secondPlot', data, layout);
   }
-  
   
 
 Plotly.d3.csv(dataSource1, function (data) { makePlot1(data) })
