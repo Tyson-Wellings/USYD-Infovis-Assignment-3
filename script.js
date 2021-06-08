@@ -16,6 +16,7 @@ function makePlot1(data) {
     }]
 
     console.log(data)
+    var dates = [['2017-1-1','2021-1-8'],['2017-1-1','2017-12-31'],['2018-1-1','2018-12-31'],['2019-1-1','2019-12-31'],['2020-1-1','2021-1-8']]
 
     var layout = { //layout information for the graph pretty standard 
 
@@ -26,7 +27,7 @@ function makePlot1(data) {
             color: "black"
         },
         xaxis: {
-            
+    
         },
         yaxis: {
             fixedrange: true
@@ -46,22 +47,27 @@ function makePlot1(data) {
                     size: 20
                 }
             },
+
             steps: [{
+                label: 'All',
+                method: 'relayout',
+                args: ['xaxis.range', dates[0]]
+            }, {
                 label: '2017',
-                method: 'restyle',
-                args: ['x-axis.range', '[1-1-2017,31-12-2017']
+                method: 'relayout',
+                args: ['xaxis.range', dates[1]]
             }, {
                 label: '2018',
-                method: 'restyle',
-                args: ['x-axis.range', '[1-1-2018,31-12-2018']
+                method: 'relayout',
+                args: ['xaxis.range', dates[2]]
             }, {
                 label: '2019',
-                method: 'restyle',
-                args: ['x-axis.range', '[1-1-2019,31-12-2019']
+                method: 'relayout',
+                args: ['xaxis.range', dates[3]]
             }, {
                 label: '2020',
-                method: 'restyle',
-                args: ['x-axis.range', '[1-1-2020,8-1-2021']
+                method: 'relayout',
+                args: ['xaxis.range', dates[4]]
             }]
         }]
     };
@@ -77,6 +83,8 @@ function makePlot1(data) {
         }
     });
 }
+
+
 
 //from https://codereview.stackexchange.com/a/171857
 function convertToParagraph(sentence, maxLineLength) {
