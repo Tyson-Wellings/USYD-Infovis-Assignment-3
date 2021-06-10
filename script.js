@@ -1,5 +1,6 @@
 
 dataSource1 = "Trump_Tweets_Frequency.csv"
+tsneDataSets = ["tsne_trump_2017.csv","tsne_trump_2018.csv","tsne_trump_2019.csv","tsne_trump_2020_2021.csv"]
 
 function makePlot1(data) {
 
@@ -113,10 +114,12 @@ function make_plot(tweet_data, tsne_data) {
             "<extra></extra>",
         marker: {
             size: 4,
-            colorscale: 'Jet',
+            colorscale: 'Rainbow',
             color: tsne_data.map(d => d.cluster_id),
         }
     }];
+
+    console.log(data)
 
     let layout = {
         width: 800,
@@ -134,8 +137,8 @@ function make_plot(tweet_data, tsne_data) {
 
 
 Plotly.d3.csv(dataSource1, function (data) { makePlot1(data) })
-Plotly.d3.csv("trump_presidential_tweets.csv", (tweets) => {
-    Plotly.d3.csv("tsne_trump_data_2020_2021.csv", (tnse_data) => {
+Plotly.d3.csv("trump_2019_tweets.csv", (tweets) => {
+    Plotly.d3.csv("tsne_trump_2019.csv", (tnse_data) => {
         make_plot(tweets, tnse_data)
     });
 });
