@@ -1,7 +1,6 @@
 
 dataSource1 = "Trump_Tweets_Frequency.csv"
-tsneDataSets = ["tsne_trump_2017.csv","tsne_trump_2018.csv","tsne_trump_2019.csv","tsne_trump_2020_2021.csv"]
-
+dataSource2 = "Kmeans_clusters.csv"
 function makePlot1(data) {
 
     function unpack(data, key) {
@@ -16,8 +15,7 @@ function makePlot1(data) {
         line: { color: 'black' }
     }]
 
-    console.log(data)
-    var dates = [['2017-1-1','2021-1-8'],['2017-1-1','2017-12-31'],['2018-1-1','2018-12-31'],['2019-1-1','2019-12-31'],['2020-1-1','2021-1-8']]
+    var dates = [['2017-1-1', '2021-1-8'], ['2017-1-1', '2017-12-31'], ['2018-1-1', '2018-12-31'], ['2019-1-1', '2019-12-31'], ['2020-1-1', '2021-1-8']]
 
     var layout = { //layout information for the graph pretty standard 
 
@@ -28,7 +26,7 @@ function makePlot1(data) {
             color: "black"
         },
         xaxis: {
-    
+
         },
         yaxis: {
             fixedrange: true
@@ -102,26 +100,99 @@ function convertToParagraph(sentence, maxLineLength) {
     }, '');
 }
 
-function make_plot(tweet_data, tsne_data) {
-    let data = [{
-        x: tsne_data.map(d => d.x),
-        y: tsne_data.map(d => d.y),
-        mode: 'markers',
-        type: 'scatter',
-        customdata: tweet_data.map(d => convertToParagraph(d.text, 64)),
-        hovertemplate:
-            "%{customdata}" +
-            "<extra></extra>",
-        marker: {
-            size: 4,
-            colorscale: 'Rainbow',
-            color: tsne_data.map(d => d.cluster_id),
-        }
-    }];
-
+function makePlot2(data) {
     console.log(data)
+    clusters = {
+        2017: {},
+        2018: {},
+        2019: {},
+        2020: {}
+        }
+
+    
+    var search_year = 2016;
+    var visibility = true
+    for (i = 0; i < data.length; i++) {
+        var datum = data[i]
+        
+        if (parseInt(datum.year) !== search_year){
+            clusters[datum.year] = {
+                x: [],
+                y: [],
+                mode: 'markers',
+                type: 'scatter',
+                customdata: [],
+                hovertemplate:
+                    "%{customdata}" +
+                    "<extra></extra>",
+                marker: {
+                    size: 4,
+                    colorscale: 'Rainbow',
+                    color: data.map(d => d.cluster_id),
+                },
+                visible: visibility
+            }
+            visibility = false
+            search_year++;
+        }
+
+        if (datum.year == search_year) {
+            clusters[datum.year].x.push(datum.x);
+            clusters[datum.year].y.push(datum.y);
+            clusters[datum.year].customdata.push(convertToParagraph(datum.text, 64))
+        }
+    }
+
+    console.log(clusters)
+
+    var data = [clusters[2017],clusters[2018],clusters[2019],clusters[2020]
+    ];
+
+    var updatemenus=[
+        {
+            buttons: [
+                {
+                    args: [{'visible': [true, false, false, false]},
+                           {'title': '2017 cluster'}],
+                    label: '2017',
+                    method: 'update'
+                },
+                {
+                    args: [{'visible': [false, true, false, false,]},
+                           {'title': '2018 cluster'}],
+                    label: '2018',
+                    method: 'update'
+                },
+                {
+                    args: [{'visible': [false, false, true, false,]},
+                           {'title': '2019 cluster'}],
+                    label: '2019',
+                    method: 'update'
+                },
+                {
+                    args: [{'visible': [false, false, false, true,]},
+                           {'title': '2020 cluster'}],
+                    label: '2020',
+                    method: 'update'
+                },
+    
+            ],
+            direction: 'left',
+            pad: {'r': 10, 't': 10},
+            showactive: true,
+            type: 'buttons',
+            x: .5,
+            xanchor: 'left',
+            y: -0.2,
+            yanchor: 'bottom'
+        },
+    
+    ]
+
 
     let layout = {
+        visible: [true, false, false, false],
+        title: '2017 cluster',
         width: 800,
         hovermode: "closest",
         xaxis: {
@@ -129,16 +200,14 @@ function make_plot(tweet_data, tsne_data) {
         },
         yaxis: {
             visible: false,
-        }
+        },
+        showlegend: false,
+        updatemenus: updatemenus,
     }
 
-    Plotly.newPlot('secondPlot', data, layout);
+    Plotly.newPlot('secondPlot', data,layout, {displayModeBar: false});
 }
 
 
 Plotly.d3.csv(dataSource1, function (data) { makePlot1(data) })
-Plotly.d3.csv("trump_2019_tweets.csv", (tweets) => {
-    Plotly.d3.csv("tsne_trump_2019.csv", (tnse_data) => {
-        make_plot(tweets, tnse_data)
-    });
-});
+Plotly.d3.csv(dataSource2, function (data) { makePlot2(data) })
