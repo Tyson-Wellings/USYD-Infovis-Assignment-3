@@ -2,7 +2,7 @@ import csv
 from sklearn.manifold import TSNE
 from sklearn.cluster import KMeans
 
-with open('Trump_Tweets_from_2020_2021_vectors.csv') as vector_data:
+with open('trump_2019_vectors.csv') as vector_data:
     vector_data_reader = csv.reader(vector_data)
     next(vector_data_reader, None) #skip headers
 
@@ -14,12 +14,10 @@ with open('Trump_Tweets_from_2020_2021_vectors.csv') as vector_data:
     x_output = [float(row[0]) for row in embedded]
     y_output = [float(row[1]) for row in embedded]
 
-    clusters = KMeans(n_clusters=10).fit_predict(training_data) #run kmeans
+    clusters = KMeans(n_clusters=9).fit_predict(training_data) #run kmeans
 
 
-    with open('tsne_trump_data_2020_2021.csv', mode='w') as output_file:
+    with open('tsne_trump_2019.csv', mode='w', newline="") as output_file:
         output_writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         output_writer.writerow(["id", "x", "y", "cluster_id"]) #write headers
         output_writer.writerows(zip(tweet_ids, x_output, y_output, clusters)) #combine data
-
-        
