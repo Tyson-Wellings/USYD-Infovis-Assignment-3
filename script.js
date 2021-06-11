@@ -127,23 +127,22 @@ function makePlot2(data) {
                     "<extra></extra>",
                 marker: {
                     size: 4,
-                    colorscale: 'Rainbow',
-                    color: data.map(d => d.cluster_id),
+                    color: [],
                 },
                 visible: visibility
             }
             visibility = false
             search_year++;
         }
-
+        console.log(datum.clusterColor)
         if (datum.year == search_year) {
             clusters[datum.year].x.push(datum.x);
             clusters[datum.year].y.push(datum.y);
-            clusters[datum.year].customdata.push(convertToParagraph(datum.text, 64))
+            clusters[datum.year].customdata.push(convertToParagraph(datum.text, 64));
+            clusters[datum.year].marker.color.push(datum.clusterColor);
         }
     }
 
-    console.log(clusters)
 
     var data = [clusters[2017],clusters[2018],clusters[2019],clusters[2020]
     ];
@@ -181,7 +180,7 @@ function makePlot2(data) {
             pad: {'r': 10, 't': 10},
             showactive: true,
             type: 'buttons',
-            x: .5,
+            x: .32,
             xanchor: 'left',
             y: -0.2,
             yanchor: 'bottom'
