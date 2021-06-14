@@ -1,12 +1,22 @@
 
+//these variables are used by functions so they are initialized globally
+var dates = [['2017-1-1', '2017-12-31'], ['2018-1-1', '2018-12-31'], ['2019-1-1', '2019-12-31'], 
+['2020-1-1', '2021-1-8'],['2017-1-1','2021-1-8']]
+var years = ['2017','2018','2019','2020-2021','2017-2021']
+var height =[[0,20],[0,20],[0,40],[0,70],[0,70]];
+var Year = 2017;
+var zoomCount=0
+
+// data sources for our makePlot functions
 dataSource1 = "Trump_Tweets_Frequency.csv"
 dataSource2 = "Kmeans_clusters.csv"
 dataSource3 = "blue_vocab_sorted.csv"
 dataSource4 = "stacked_bar.csv"
 
+//This function is taken from class provided code
 function unpack(data, key) {
     return data.map(function (data) { return data[key]; });
-}
+} 
 
 //from https://codereview.stackexchange.com/a/171857
 function convertToParagraph(sentence, maxLineLength) {
@@ -23,8 +33,30 @@ function convertToParagraph(sentence, maxLineLength) {
     }, '');
 }
 
-function make_clusters_by_year(data) {
+//this custom function controls the buttons. Using arrays and index's cuts down on the lines of code I have to write.
+function adjustPlot1 (index){
+    
+    Plotly.animate('firstPlot', {
 
+        layout: {
+          xaxis: {range: dates[index]},
+          yaxis: {range: height[index]},
+          title: {
+            text: 'Total Daily Trump Tweets in '+years[index]}
+        }
+        }, {
+        transition: {
+          duration: 500,
+          easing: 'cubic-in-out'
+        }
+    })
+}
+
+
+// This function sorts the kmeans clusters into different traces which are then shown according to the button interactions.
+
+function make_clusters_by_year(data) {
+ 
     clusters = {
         2017: {},
         2018: {},
@@ -32,7 +64,7 @@ function make_clusters_by_year(data) {
         2020: {}
     }
 
-
+//this code takes inspiration from the clusters code provided in week 11
     var search_year = 2016;
     var visibility = true
     for (i = 0; i < data.length; i++) {
@@ -67,7 +99,7 @@ function make_clusters_by_year(data) {
 
     return clusters
 }
-
+//similar function to the last one. This one is used for the 3rd graph hence  make_cluster_by_word
 function make_clusters_by_word(data) {
 
     clusters = []
@@ -105,72 +137,78 @@ function make_clusters_by_word(data) {
     return clusters
 }
 
+//inspired by the unpack function from before. This one is used in the fourth graph. 
+
+function unpackDates (data,week){
+    var range = ['2020-01-01']
+    var endDate = week*7
+    range.push(data[endDate].date)
+    return range
+}
+
+//This function is used in graph 4 to toggle the y-axis
+function zoomOut4 (reset){
+    
+    var max = [100,200,400,600,800,1000]
+    zoomCount++
+    if (reset == 0){
+        zoomCount=0
+    }
+    if (zoomCount > 5){
+        zoomCount = 5
+    }
+    Plotly.animate('fourthPlot', {
+
+        layout: {
+          yaxis: {range: [0, max[zoomCount]]}
+        }
+        }, {
+        transition: {
+          duration: 500,
+          easing: 'cubic-in-out'
+        }
+    })
+}
+
 function makePlot1(data) {
-
-
 
     var data = [{
         type: "bar",
         name: 'Trump Tweets',
         x: unpack(data, 'date'),
         y: unpack(data, 'Frequency'),
-        line: { color: 'black' }
+        marker: { color: '1F7A8C' }
     }]
 
-    var dates = [['2017-1-1', '2021-1-8'], ['2017-1-1', '2017-12-31'], ['2018-1-1', '2018-12-31'], ['2019-1-1', '2019-12-31'], ['2020-1-1', '2021-1-8']]
+    var layout = { 
+        title: {
+            text: 'Total Daily Trump Tweets in '+years[0],
+            font: {
+                family: 'Cabin',
+                size: 24,
+                type: 'bold'
+              },
 
-    var layout = { //layout information for the graph pretty standard 
-
+        },
+        plot_bgcolor: "#fafafa",
+        paper_bgcolor: '#fafafa',
         width: 800,
+        height: 400,
         font: {
-            size: 16,
-            family: "Heebo",
+            size: 12,
+            family: "Cabin",
             color: "black"
         },
         xaxis: {
-
+            range: dates[0]
         },
         yaxis: {
-            fixedrange: true
+            range:[0,20]
         },
         line: {
             width: 1
         },
         hovermode: 'closest',
-
-        sliders: [{
-            pad: { t: 30 },
-            currentvalue: {
-                xanchor: 'right',
-                prefix: 'Year: ',
-                font: {
-                    color: '#888',
-                    size: 20
-                }
-            },
-
-            steps: [{
-                label: 'All',
-                method: 'relayout',
-                args: ['xaxis.range', dates[0]]
-            }, {
-                label: '2017',
-                method: 'relayout',
-                args: ['xaxis.range', dates[1]]
-            }, {
-                label: '2018',
-                method: 'relayout',
-                args: ['xaxis.range', dates[2]]
-            }, {
-                label: '2019',
-                method: 'relayout',
-                args: ['xaxis.range', dates[3]]
-            }, {
-                label: '2020',
-                method: 'relayout',
-                args: ['xaxis.range', dates[4]]
-            }]
-        }]
     };
 
 
@@ -185,8 +223,6 @@ function makePlot1(data) {
     });
 }
 
-
-
 function makePlot2(data) {
 
     clusters = make_clusters_by_year(data)
@@ -194,10 +230,8 @@ function makePlot2(data) {
     var data = [clusters[2017], clusters[2018], clusters[2019], clusters[2020]
     ];
 
-    console.log(data)
-
     var updatemenus = [
-        {
+        {   //it says buttons but these become the dropdown menu. essentially the clusters are revealed based on what label is picked.
             buttons: [
                 {
                     args: [{ 'visible': [true, false, false, false] },
@@ -225,13 +259,14 @@ function makePlot2(data) {
                 },
 
             ],
-            direction: 'left',
-            pad: { 'r': 10, 't': 10 },
+             direction: 'down',
+            pad: { 'r': 5, 'l': 5, 'b':5, 't': 5 },
             showactive: true,
-            type: 'buttons',
+            type: 'dropdown',
             xanchor: 'left',
-            y: -0.2,
-            yanchor: 'bottom'
+            x: .8,
+            yanchor: 'top',
+            y: 1 
         },
 
     ]
@@ -239,9 +274,24 @@ function makePlot2(data) {
 
     let layout = {
         visible: [true, false, false, false],
-        title: '2017 cluster',
+        title: {
+            text: '2017 cluster',
+            font: {
+                family: 'Cabin',
+                size: 24,
+                type: 'bold'
+              },
+
+        },
+        plot_bgcolor: "#fafafa",
+        paper_bgcolor: '#fafafa',
         width: 800,
-        hovermode: "closest",
+        height: 400,
+        font: {
+            size: 12,
+            family: "Cabin",
+            color: "black"
+        },
         xaxis: {
             visible: false,
         },
@@ -249,6 +299,7 @@ function makePlot2(data) {
             visible: false,
         },
         showlegend: false,
+        hovermode: "closest",
         updatemenus: updatemenus,
     }
 
@@ -258,8 +309,7 @@ function makePlot2(data) {
 function makePlot3(data) {
 
     clusters = make_clusters_by_word(data)
-
-    var data = [clusters[0], clusters[1], clusters[2], clusters[3], clusters[4], clusters[5]];
+    var data = [clusters[0], clusters[1], clusters[2], clusters[3], clusters[4], clusters[5]]; 
     var updatemenus = [
         {
             buttons: [
@@ -301,21 +351,38 @@ function makePlot3(data) {
                 },
 
             ],
-            direction: 'left',
+            direction: 'down',
             pad: { 'r': 10, 't': 10 },
             showactive: true,
-            type: 'buttons',
-            xanchor: 'left',
-            y: -0.2,
-            yanchor: 'bottom'
+            type: 'dropdown',
+            xanchor: 'right',
+            x: 1.2,
+            yanchor: 'top',
+            y: 1.05
         },
 
     ]
 
 
     let layout = {
-        title: 'All Blue Tweets',
+        title: {
+            text: 'All Blue Tweets',
+            font: {
+                family: 'Cabin',
+                size: 24,
+                type: 'bold'
+              },
+
+        },
+        plot_bgcolor: "#fafafa",
+        paper_bgcolor: '#fafafa',
         width: 800,
+        height: 400,
+        font: {
+            size: 12,
+            family: "Cabin",
+            color: "black"
+        },
         hovermode: "closest",
         xaxis: {
             visible: false,
@@ -330,11 +397,12 @@ function makePlot3(data) {
     Plotly.newPlot('thirdPlot', data, layout, { displayModeBar: false });
 }
 
-var words, dates, months, steps, traces4 = []
-var currentword
+
 function makePlot4(data) {
+    var words,traces4 = []
 
 
+    console.log(data)
     function unpack(data, key) {
         return data.map(function (data) { return data[key]; });
     }
@@ -342,104 +410,67 @@ function makePlot4(data) {
     words = ['fake', 'radical', 'sleepy', 'corrupt', 'Lamestream']
     steps = []
     colors = ["053c5e","1f7a8c","20a4f3","ce7b91","c1292e"]
-    traces4[0] = {
-        type: "bar",
-        name: [],
-        x: [],
-        y: [],
-        marker: {color:[]}
-    }
+
 
     for (i = 0; i < words.length; i++) {
-        traces4[0].name.push(words[i] + " cumulative tweets count")
-        traces4[0].x.push(words[i])
-        traces4[0].y.push(data[0][words[i]])
-        traces4[0].marker.color.push(colors[i])
-    }
-    var frames = []
-    var counter = 0
-
-    for (j = 0; j < 370; j+=7) {
-        var datum = data[j]
-        frames.push({
-            name: 'week '+(counter+1),
-            data: [{
-                x: [],
-                y: []
-            }],
-           
-        })
-        
-
-        for (i = 0; i < words.length; i++) {
-            frames[counter].data[0].y.push(datum[words[i]])
-            frames[counter].data[0].x.push(words[i])
+        traces4[i] = {
+            type: "bar",
+            name: (words[i]),
+            x: unpack(data, 'date'),
+            y: unpack(data, words[i]),
+            marker: {
+                color:colors[i]
+            }
         }
-        
-        steps.push(
-            {
-                label: ('week ' +(counter+1)),
-                method: 'animate',
-                args: [['week '+(counter+1)], {
-                    mode: 'immediate',
-                    transition: { duration: 300 },
-                    frame: { duration: 300 },
-                }]
-            })
-            counter++
-    }
+    } 
     
+    numberOfWeeks = (data.length)/7-1
+    for (j = 0; j < numberOfWeeks; j++) {
+       
+        steps.push(
+            {   
+                label: ('week '+(j+1)),
+                method: 'relayout',
+                args: ['xaxis.range', unpackDates(data,j+1)]
+                    
+            })
+    } 
 
-var layout = { //layout information for the graph pretty standard 
-    barmode: "stack",
-    width: 900,
+var layout = {
+    title: {
+        text: "Cumulative count of Trump Tweets Containing Specific Loaded Words",
+        font: {
+            family: 'Cabin',
+            size: 24,
+            type: 'bold'
+          },
+
+    },
+    plot_bgcolor: "#fafafa",
+    paper_bgcolor: '#fafafa',
+    width: 800,
+    height: 400,
     font: {
-        size: 16,
-        family: "Heebo",
+        size: 12,
+        family: "Cabin",
         color: "black"
     },
+    barmode: "stack",
     xaxis: {
+        range: unpackDates(data, 1)
 
     },
     yaxis: {
-        range: [0,400]
+        range:[0,100]
     },
     line: {
         width: 10
     },
     hovermode: 'closest',
-    
-    updatemenus: [{
-        x: 0,
-        y: 0,
-        yanchor: 'top',
-        xanchor: 'left',
-        showactive: false,
-        direction: 'left',
-        type: 'buttons',
-        pad: {t: 87, r: 10},
-        buttons: [{
-          method: 'animate',
-          args: [null, {
-            mode: 'immediate',
-            fromcurrent: true,
-            transition: {duration: 300},
-            frame: {duration: 300, redraw: false}
-          }],
-          label: 'Play'
-        }, {
-          method: 'animate',
-          args: [[null], {
-            mode: 'immediate',
-            transition: {duration: 0},
-            frame: {duration: 0, redraw: false}
-          }],
-          label: 'Pause'
-        }]
-      }],
 
     sliders: [{
-        pad: { t: 40 },
+        active: 0,
+        pad: { t: 10 },
         currentvalue: {
             xanchor: 'right',
             font: {
@@ -448,22 +479,17 @@ var layout = { //layout information for the graph pretty standard
             }
         },
         steps: steps
-    }]
+    }] 
 
 }
-// Create the plot:
 Plotly.newPlot('fourthPlot', {
     data: traces4,
     layout: layout,
     config: {
         displayModeBar: false
     },
-    frames: frames,
 });
 }
-
-
-
 
 Plotly.d3.csv(dataSource1, function (data) { makePlot1(data) })
 Plotly.d3.csv(dataSource2, function (data) { makePlot2(data) })

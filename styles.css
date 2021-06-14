@@ -1,0 +1,136 @@
+*{
+    font-family: 'Cabin', sans-serif;
+    
+}
+
+body{
+    background-color: #fafafa;
+}
+h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 0 24px 0
+}
+
+h2{
+    margin: 0;
+    font-size: 24px;
+}
+
+p{
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.point-containers{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px 24px;
+    align-items: center;
+}
+
+#first-point-container h2{
+    margin: 0 0 24px 0;
+}
+
+#introduction{
+    padding: 24px 24px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#intro-copy{
+    width: 40%;
+    display: inline-block;
+
+}
+
+#img-container{
+    width: 40%
+}
+
+#introduction img{
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    margin: 0 24px;
+}
+
+
+#firstPlot-container{
+    text-align: center;
+}
+
+#firstPlot{
+    position: relative;
+    z-index: 4;
+}
+
+#plot1-button-container{
+    position: relative;
+    margin-top: -40px; 
+    z-index: 9;
+}
+
+.plot1-buttons{
+    padding: 3px 12px;
+}
+
+#second-point-container h2{
+    margin: -12px 0 24px 0;
+}
+
+#secondPlot{
+    position: relative;
+    z-index: 5;
+}
+
+#second-plot-conc-copy{
+    position: relative;
+    margin: -36px 0 0 0;
+    z-index: 9;
+}
+
+.copy{
+    width: 70%;
+    column-count: 2;
+}
+
+#third-point-container h2{
+    margin: -24px 0 12px 0 
+}
+#thirdPlot{
+    position: relative;
+    z-index: 5;
+}
+
+#thirdPlot-copy{
+    margin: -48px 0 0 0;
+    position: relative;
+    z-index: 9;
+}
+
+#fourthPlot-container{
+    position: relative;
+    margin: -48px 0 0 0;
+}
+
+#fourthPlot-button-container{
+    margin: 12px 0;
+ 
+
+}
+
+.zoom-buttons{
+    margin: 3px 0;
+}
+
+
+
+

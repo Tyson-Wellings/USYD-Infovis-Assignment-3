@@ -1,32 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infovis Assignment 3</title>
 </head>
-    
+
 <body>
-    <div id="firstPlot">
+    <div id="introduction">
+        <div id="intro-copy">
+            <h1>Was Twitter's decision to banish Trump from their platform blatant censorship?</h1>
+            <p>On Jan 6th 2021, supporters of 45th U.S president Donald Trump stormed the U.S Capitol.
+                As members of congress met to recount the electoral votes, an angry mob of Trump supporters battled
+                police officers
+                guarding the Capitol. These police officers were eventually overwhelmed. The mob forcefully made its way
+                into the
+                Capitol causing the congress members to evacuate as they donned gas masks. Eventually the Capitol was
+                cleared.
+                5 people had lost their lives and 140 were injured. In the aftermath of the events twitter made a
+                decision that
+                some found controversial. On January 8th Twitter decided to officially banish Trump from their platform
+                as they
+                feared his further tweeting could incite more violence.
+            </p>
+        </div>
+        <div id="img-container">
+            <img src="intro-image.jpg">
+        </div>
+
 
     </div>
 
-    <div id='secondPlot'>
+    <div id="first-point-container" class="point-containers">
+        <h2>
+            Trump the Prolific Tweeter
+        </h2>
+        <p class="copy" id="first-point-copy">
+            Trump’s term as president began on the the 20th of January 2017 and lasted until the 8th of January 2021,
+            a total of 1449 days had elapsed. During Trump's presidency he had tweeted a total of 16717 times.
+            This means that on average Trump was tweeting 11.53 times per day. However, in reality his use was a lot
+            more sporadic.
+            <br> <br>
+            It is interesting to note that as the years go by Trump’s twitter usage increases. The largest peak of usage
+            is
+            during October-November which coincided with the commencement of the 2020 presidential election voting.
+            During Trump’s presidency his Twitter following would grow from approximately 20 million followers all the
+            way
+            up to 88 millions followers before he was banned from the platform on the 8th of January 2021. Trump’s
+            frequent
+            use of Twitter helped him build up a cult-like following on the platform. In this article we will examine
+            how
+            Trump’s tweets helped to build a narrative that could eventually incite such extreme mob mentality as
+            evident
+            during the U.S Capitol Riots.
+        </p>
+        <div id="firstPlot-container">
+            <div id="firstPlot">
+
+            </div>
+            <div id="plot1-button-container">
+                <button onclick='adjustPlot1(0)' class="plot1-buttons">
+                    2017
+                </button>
+                <button onclick='adjustPlot1(1)' class="plot1-buttons">
+                    2018
+                </button>
+                <button onclick='adjustPlot1(2)' class="plot1-buttons">
+                    2019
+                </button>
+                <button onclick='adjustPlot1(3)' class="plot1-buttons">
+                    2020
+                </button>
+                <button onclick='adjustPlot1(4)' class="plot1-buttons">
+                    2017-2021
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+    <div id=second-point-container class="point-containers">
+        <h2>Sticks and Stones may Break my Bones...</h2>
+        <p class="copy secondPlot-copy">
+            Name Calling has been long used for years in propaganda as a way to put another party down, while the term
+            propaganda has a very heavy connotation one can look at billboards and advertisements to see that name
+            calling is still a common tactic used to market products.
+            <br> <br>
+            Below are word clusters created using complex learning algorithms. While not perfect they do group tweets
+            into discernable clusters that in general do share some commonalities. The clusters in blue are tweets that
+            in general build a narrative that the democrats (hence the use of blue) are corrupt and cannot be trusted,
+            except for Trump and his associates of course. Blue clusters also include negative sentiments towards the
+            media and other countries. You can consider these the tweets that contain a lot of name calling. The tweets
+            in red are tweets that in general are Trump speaking positively towards members of the republic party or
+            people who support his agenda. These red tweets also include tweets where Trump highlights the good he has
+            achieved as president.The grey clusters are tweets that are more neutral with not as much loaded language.
+            This has been done for every year of Trump’s presidency (with 2020 and 2021 combined). You can hover over
+            the clusters to read some of these tweets.
+        </p>
+        <div id='secondPlot-container'>
+            <div id='secondPlot'>
+
+            </div>
+        </div>
+        <p id="second-plot-conc-copy" class="copy secondPlot-copy">
+            When looking through Trump’s tweets it is hard not to notice how much emotion he converys. His tweets lack
+            the professional matter of fact tone that other politicians typically adopt on their social media. It is
+            interesting to note the evolution of his twitter behavior. In 2017 there are alot of red tweets speaking
+            idealistically of what he wants to achieve and what he has achieved in his first year as president. While
+            there are still blue tweets the red dominate overall. In 2018-2019 the balance shifts in the favor of blue
+            tweets until 2020 where the red tweets are sparse, at this point the majority of Trump’s tweets speak poorly
+            of his opposition. Hover over the clusters to read some of the tweets. The groupings aren’t perfect and a
+            lot of tweets are more of a red and blue hybrid in 2020 but it becomes very clear that the characteristics
+            of Trump’s tweets have shifted over the years. This indiscriminate use of name calling is one way in which
+            Trump’s twitter contributed to the events that transpired during the U.S Capitol Riots.
+
+        </p>
 
     </div>
 
-    <div id='thirdPlot'>
+    <div id='third-point-container' class="point-containers">
+        <h2>
+            Examining 2020-2021 a little closer
+        </h2>
 
+        <p class="copy">
+            So far we have established that Trump tweeted more as his presidency played out and he also began to talk
+            about his opposition more and more. One could argue that this is to be expected from Trump when you consider
+            he would have been going through another presidential campaign. When we analyze all of Trump’s blue tweets
+            from 2020-2021 and create a tally of the vocabulary used we can begin to identify common storylines and
+            tropes. Providing us a more nuanced understanding of the nature of Trump’s name calling and the narratives
+            it creates.
+            In total Trump’s tweets contained 25320 unique words. Let’s draw our attention to the top 253 words, which
+            be the top 0.1% of words tweeted by Trump. Within this top 0.1% we can find the following words: Fake,
+            radical, sleepy, corrupt and lamestream.
+
+        </p>
+        <div id='thirdPlot'>
+
+        </div>
+
+        <p id="thirdPlot-copy"class="copy">
+            When clicking through the different words a few common narratives emerge. The ‘Lamestream’ media is full of
+            fake news. Joe Biden is lazy and unqualified to lead the U.S hence the moniker ‘sleepy’ Joe. The ‘radical’
+            left controls the ‘Lamestream’ media, social media platforms and the democratic party as a whole. The media
+            and democrats overall are ‘corrupt’. Ironically the fear mongering that Trump claimed the media used against
+            him is actually the second way in which Trump’s tweets contributed to the events of the U.S Capitol Riots.
+        </p>
     </div>
 
-    <div id="fourthPlot-container">
+
+    <div id="fourthPlot-container" class="point-containers">
         <div id="fourthPlot">
 
         </div>
+        <div id=fourthPlot-button-container>
+            <button onclick='zoomOut4()' class="zoom-buttons" id="zoom-out-button">
+                Zoom Out
+            </button>
+            <button onclick='zoomOut4(0)' class="zoom-buttons">
+                Reset Zoom
+            </button>
+        </div>
+
+
+        <h1>Putting it all together</h1>
+        <p class="copy">
+            Through the exploration of the data presented we can see that Trump in his tweets used name calling, loaded
+            language and repetition to create and reinforce ideas that directly bred distrust in the government
+            (particularly those on the democratic side) and the traditional media. These same ideas created a narrative
+            amongst Trump supporters that America’s only hope for continued prosperity was in Trump repeating as
+            president. It is not surprising that his supporters, once realizing that Trump had lost the election, would
+            behave in a way that as a collective led to the horrific events of the 2021 Capitol riots. Was twitter
+            justified in the ban of Trump off the platform? I invite you to go back and explore the data provided to
+            come up with an answer yourself.
+
+        </p>
+
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
